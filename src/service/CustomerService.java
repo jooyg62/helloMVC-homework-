@@ -6,32 +6,44 @@ import java.util.Map;
 import model.Customer;
 
 public class CustomerService {
-	
+
 	private Map<String, Customer> customers;
 
-	public CustomerService() {
+	private static final CustomerService instance = new CustomerService();
+
+	private CustomerService() {
 		customers = new HashMap<String, Customer>();
-		
-		addCustomer( new Customer("id001", "Alice", "alice.hansung.ac.kr"));
-		addCustomer( new Customer("id002", "Bob", "Bob.hansung.ac.kr"));
-		addCustomer( new Customer("id003", "Charlie", "Charlie.hansung.ac.kr"));
-		addCustomer( new Customer("id004", "David", "David.hansung.ac.kr"));
-		addCustomer( new Customer("id005", "Trudy", "Trudy.hansung.ac.kr"));
-		
-		
 	}
-	
-	
+
+	public static CustomerService getInstance() {
+		return instance;
+	}
+
+	public Customer login(String id, String password) {
+		Customer customer = findCustomer(id);
+
+		if (customer != null && customer.getPassword().equals(password)) {
+			return customer;
+		} else
+			return null;
+	}
+
+	public boolean checkCustomer(Customer customer) {
+		if (customer.getId().isEmpty() || customer.getPassword().isEmpty())
+			return false;
+		else
+			return true;
+	}
+
 	public void addCustomer(Customer customer) {
 		customers.put(customer.getId(), customer);
 	}
-	
+
 	public Customer findCustomer(String id) {
-		if(id != null)
-			return(customers.get(id.toLowerCase()));
+		if (id != null)
+			return (customers.get(id.toLowerCase()));
 		else
 			return null;
 	}
-	
 
 }

@@ -29,33 +29,27 @@ public class DoLogin extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String customerId = request.getParameter("customerId");
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
 		
 		// perform business logic. Return a bean as a result.
 	
-		CustomerService service = new CustomerService();
-		Customer customer = service.findCustomer(customerId);
+		CustomerService service = (CustomerService) CustomerService.getInstance();
+		Customer customer = service.login(id, password);
 		request.setAttribute("customer", customer);
-		
-		//We can iternate over lists using forEach in JSTL
-		//ArrayList를 이용하여 세명의 customer을 집어 넣어줬음
-		List<Customer> customers = new ArrayList<>();
-		customers.add(new Customer("id006", "Kim", "kim@hansung.ac.kr"));
-		customers.add(new Customer("id006", "Lee", "lee@hansung.ac.kr"));
-		customers.add(new Customer("id006", "Park", "park@hansung.ac.kr"));
-		request.setAttribute("customerList", customers);//request에 customer을 집어넣어줌
 		
 		String page;
 		
-		if(customer == null)
-			page ="/view/error.jsp";
-		else
-			page ="/view/success.jsp";
+		if(customer == null){
+			page ="/view/loginFail.jsp";
+			request.setAttribute("id", id);
+	}
+		else {
+			page ="/view/loginSucess.jsp";
+			request.setAttribute("customer", customer);
+		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 		dispatcher.forward(request,  response);

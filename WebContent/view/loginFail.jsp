@@ -7,6 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-This is a help page.
+
+	<h1> ${customer.name } logged in fail.</h1>
+	<p>
+		<a href="/helloMVC/index.jsp"> go to home page </a>
+	</p>
+
 </body>
 </html>
